@@ -1,6 +1,10 @@
 # OSX
 #
 .DS_Store
+venv/
+*.pyc
+
+vendor/
 
 # Xcode
 #
@@ -56,7 +60,7 @@ yarn-error.log
 *.jsbundle
 
 # Ruby / CocoaPods
-/ios/Pods/
+/client/ios/Pods/
 /vendor/bundle/
 
 # Temporary files created by Metro to check the health of the file watcher
