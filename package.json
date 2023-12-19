@@ -13,6 +13,7 @@
     "nativewind": "^2.0.11",
     "react": "18.2.0",
     "react-native": "0.73.1",
+    "react-native-document-picker": "^9.1.0",
     "tailwindcss-react-native": "^1.7.10"
   },
   "devDependencies": {
