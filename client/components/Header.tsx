@@ -11,7 +11,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ title }) => {
   return (
-    <StyledView className="w-full p-4 bg-black items-center justify-center">
+    <StyledView className="w-full pt-6 pb-4 bg-gray-900 items-center justify-center">
       <StyledText className="text-red-500 text-2xl">{title}</StyledText>
     </StyledView>
   );

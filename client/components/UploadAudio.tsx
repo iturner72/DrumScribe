@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TouchableOpacity, Alert, Text, View } from 'react-native';
+import LottieView from 'lottie-react-native';
 import { styled, tw } from 'nativewind';
 import DocumentPicker from 'react-native-document-picker';
 import RNFetchBlob from 'rn-fetch-blob';
@@ -9,8 +10,11 @@ const StyledTouchableOpacity = styled(TouchableOpacity);
 const StyledView = styled(View);
 const StyledText = styled(Text);
 
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 const UploadAudio: React.FC = () => {
   const [uploadedSong, setUploadedSong] = useState<string | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const handleSelectFile = async () => {
     try {
@@ -53,24 +57,51 @@ const UploadAudio: React.FC = () => {
     }
   };
 
-  const handleGenerateDrumChart = () => {
+  const handleGenerateDrumChart = async () => {
+    setIsProcessing(true);
+
+    try {
+      const response = await axios.post('http://localhost:8000/audio/separate_drums/', { audio: uploadedSong });
+      console.log('Separation response:', response.data);
+    } catch (error) {
+      console.error('Error during drum deparation:', error);
+    }
+
     console.log('Generating drum chart for', uploadedSong);
   };
 
+  useEffect(() => {
+    console.log('processing status:', isProcessing);
+    if (isProcessing) {
+      sleep(5000).then(() => setIsProcessing(false));
+    }
+  }, [isProcessing]);
+
   return (
     <StyledView className="flex-1 justify-center items-center p-4">
-      <StyledTouchableOpacity title="Upload Audio" onPress={handleSelectFile} tw="bg-4 bg-blue-500 py-2 px-4 rounded">
-        <StyledText tw="text-white font-bold">Upload Audio</StyledText>
+      {isProcessing && (
+        <>
+        {console.log('Rendering Lottie Animation')}
+        <LottieView
+          style={{width: 200, height: 200}}
+          source={require('./../utils/notes_animation.json')}
+          autoPlay
+          loop
+        />
+        </>
+      )}
+      <StyledTouchableOpacity title="Upload Audio" onPress={handleSelectFile} tw="bg-4 bg-teal-700 py-2 px-4 rounded">
+        <StyledText tw="text-white font-bold">Upload Audio 🔊</StyledText>
       </StyledTouchableOpacity>
       {uploadedSong && (
         <>
           <StyledView className="mt-4 p-2 bg-slate-700 rounded-lg">
-            <StyledText className="text-slate-300 text-lg font-semibold">
+            <StyledText className="text-slate-300 font-semibold">
               {uploadedSong}
             </StyledText>
           </StyledView>
           <StyledTouchableOpacity onPress={handleGenerateDrumChart} tw="mt-4 bg-rose-400 text-rose-100 font-bold py-2 px-4 rounded">
-            <StyledText tw="text-rose-100 font-bold">Generate Drum Chart</StyledText>
+            <StyledText tw="text-rose-100 text-lg font-bold">Generate Drum Chart 🥁</StyledText>
           </StyledTouchableOpacity> 
         </>
       )}

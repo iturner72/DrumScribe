@@ -10,7 +10,7 @@ const StyledText = styled(Text)
 
 const App: React.FC = () => {
   return (
-    <StyledView className="flex-1 items-center bg-slate-900">
+    <StyledView className="flex-1 items-center bg-gray-800">
       <Header title="DrumScribe" />
       <UploadAudio />
     </StyledView>
