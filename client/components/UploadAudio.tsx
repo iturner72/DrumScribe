@@ -14,33 +14,30 @@ const UploadAudio: React.FC = () => {
         type: [DocumentPicker.types.audio],
       });
 
-      const simpleBlob = new Blob(['Simple text file'], { type: 'text/plain' });
-
       const pickedFile = res[0];
       console.log('Picked file:', pickedFile);
 
-      // Log the full file URI
-      console.log('File URI:', pickedFile.uri);
+      let fileURI = decodeURIComponent(pickedFile.uri);
+      if (fileURI.startsWith('file://')) {
+        fileURI = fileURI.substring(7);
+      }
+      console.log('Corrected File URI:', fileURI);
 
-      const decodedURI = decodeURIComponent(pickedFile.uri);
-      console.log('Decoded URI:', decodedURI);
-      const fileData = await RNFetchBlob.fs.readFile(decodedURI.replace('file://', ''), 'base64');
-      console.log('Creating blob from file data');
-      const blob = await RNFetchBlob.polyfill.Blob.build(fileData, { type: `${pickedFile.type};BASE64` });
-      console.log('Blob created successfully');
-      console.log('Blob:', blob);
+      const fileBlob = {
+        uri: fileURI,
+        type: pickedFile.type,
+        name: pickedFile.name,
+      }; 
+      console.log('File blob:', fileBlob);
 
       const formData = new FormData();
       formData.append('title', pickedFile.name);
-      formData.append('audio', blob, pickedFile.name);
-      console.log('FormData:', formData)
-
-      console.log('FormData prepared, attempting to upload');
+      formData.append('audio', fileBlob);
+      console.log('FormData:', formData);
 
       // Send the request
       const response = await axios.post('http://localhost:8000/audio/upload/', formData);
-
-      console.log(response.data);
+      console.log('Upload response:', response.data);
 
     } catch (err) {
       console.error('Error during file selection or upload:', err);
