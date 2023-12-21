@@ -4,6 +4,7 @@
 venv/
 *.pyc
 *.mp3
+*.wav
 
 vendor/
 

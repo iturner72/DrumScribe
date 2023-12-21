@@ -15,6 +15,7 @@ const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 const UploadAudio: React.FC = () => {
   const [uploadedSong, setUploadedSong] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [uploadedSongId, setUploadedSongId] = useState<number | null>(null);
 
   const handleSelectFile = async () => {
     try {
@@ -49,6 +50,8 @@ const UploadAudio: React.FC = () => {
 
       if (response.data && response.data.message === 'File uploaded successfully!') {
         setUploadedSong(pickedFile.name);
+        setUploadedSongId(response.data.id);
+        console.log('ID set:', response.data.id)
       }
 
     } catch (err) {
@@ -61,10 +64,20 @@ const UploadAudio: React.FC = () => {
     setIsProcessing(true);
 
     try {
-      const response = await axios.post('http://localhost:8000/audio/separate_drums/', { audio: uploadedSong });
-      console.log('Separation response:', response.data);
+      if (uploadedSongId !== null) {
+        const response = await axios.post('http://localhost:8000/audio/separate_drums/', { 
+            audio_file_id: uploadedSongId 
+            }, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            console.log('Separation response:', response.data);
+      } else {
+        console.error('No audio file ID available for drum separation');
+      }
     } catch (error) {
-      console.error('Error during drum deparation:', error);
+      console.error('Error during drum separation:', error);
     }
 
     console.log('Generating drum chart for', uploadedSong);
