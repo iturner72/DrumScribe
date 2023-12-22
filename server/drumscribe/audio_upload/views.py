@@ -1,15 +1,11 @@
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
-from demucs import pretrained
-from demucs.apply import apply_model
-from demucs import separate
 import demucs.api
 from .models import AudioFile
 from .forms import AudioFileForm
 from django.conf import settings
 import os
 import torchaudio
-import torch
 import json
 import subprocess
 from pathlib import Path
@@ -65,7 +61,12 @@ def separate_drums(request):
 
             save_separated_tracks(separated, output_dir, sample_rate)
 
-            return JsonResponse({'message': 'Drum track separated successfully!'})
+            file_urls = []
+            for track_name, _ in separated.items():
+                file_url = request.build_absolute_uri(settings.MEDIA_URL + 'separated_tracks/' + f"{track_name}.wav")
+                file_urls.append(file_url)
+
+            return JsonResponse({'message': 'Drum track separated successfully!', 'urls': file_urls})
         except AudioFile.DoesNotExist:
             return JsonResponse({'error': 'Audio file not found'}, status=404)
         except Exception as e:

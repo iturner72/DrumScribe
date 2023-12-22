@@ -4,6 +4,7 @@ import LottieView from 'lottie-react-native';
 import { styled, tw } from 'nativewind';
 import DocumentPicker from 'react-native-document-picker';
 import RNFetchBlob from 'rn-fetch-blob';
+import AudioPlayer from './AudioPlayer'; 
 import axios from 'axios';
 
 const StyledTouchableOpacity = styled(TouchableOpacity);
@@ -16,6 +17,7 @@ const UploadAudio: React.FC = () => {
   const [uploadedSong, setUploadedSong] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [uploadedSongId, setUploadedSongId] = useState<number | null>(null);
+  const [separatedTracks, setSeparatedTracks] = useState([]);
 
   const handleSelectFile = async () => {
     try {
@@ -73,6 +75,9 @@ const UploadAudio: React.FC = () => {
                 }
             });
             console.log('Separation response:', response.data);
+            if (response.data.urls) {
+                setSeparatedTracks(response.data.urls);
+            }
       } else {
         console.error('No audio file ID available for drum separation');
       }
@@ -117,7 +122,10 @@ const UploadAudio: React.FC = () => {
             <StyledText tw="text-rose-100 text-lg font-bold">Generate Drum Chart 🥁</StyledText>
           </StyledTouchableOpacity> 
         </>
-      )}
+        )}
+        {separatedTracks.map((trackUrl, index) => (
+          <AudioPlayer key={index} url={trackUrl} />
+        ))}
     </StyledView>
   );
 };

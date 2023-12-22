@@ -17,6 +17,7 @@
     "react": "18.2.0",
     "react-native": "0.73.1",
     "react-native-document-picker": "^9.1.0",
+    "react-native-sound": "^0.11.2",
     "rn-fetch-blob": "^0.12.0",
     "tailwindcss-react-native": "^1.7.10"
   },
