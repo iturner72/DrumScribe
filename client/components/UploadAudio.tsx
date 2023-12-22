@@ -5,6 +5,7 @@ import { styled, tw } from 'nativewind';
 import DocumentPicker from 'react-native-document-picker';
 import RNFetchBlob from 'rn-fetch-blob';
 import AudioPlayer from './AudioPlayer'; 
+import TrackItem from './TrackItem';
 import axios from 'axios';
 
 const StyledTouchableOpacity = styled(TouchableOpacity);
@@ -18,6 +19,16 @@ const UploadAudio: React.FC = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [uploadedSongId, setUploadedSongId] = useState<number | null>(null);
   const [separatedTracks, setSeparatedTracks] = useState([]);
+
+  const getTrackTitlebyIndex = (index) => {
+    switch(index) {
+      case 0: return 'Drums';
+      case 1: return 'Bass';
+      case 2: return 'Guitar';
+      case 3: return 'Vocals';
+      default: return 'Unknown';
+    }
+  };
 
   const handleSelectFile = async () => {
     try {
@@ -122,10 +133,16 @@ const UploadAudio: React.FC = () => {
             <StyledText tw="text-rose-100 text-lg font-bold">Generate Drum Chart 🥁</StyledText>
           </StyledTouchableOpacity> 
         </>
-        )}
+      )}
+      <StyledView tw="flex-row flex-wrap justify-center">
         {separatedTracks.map((trackUrl, index) => (
-          <AudioPlayer key={index} url={trackUrl} />
+          <TrackItem
+            key={index}
+            url={trackUrl}
+            title={getTrackTitlebyIndex(index)}
+          />
         ))}
+      </StyledView>
     </StyledView>
   );
 };

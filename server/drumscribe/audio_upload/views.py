@@ -53,7 +53,9 @@ def separate_drums(request):
             _, sample_rate = torchaudio.load(file_path)
             print("File loaded successfully")
 
+            print("Separating track")
             _, separated = separator.separate_audio_file(file_path)
+            print("Track separated successfully")
 
             output_dir = os.path.join(settings.BASE_DIR, 'media', 'separated_tracks')
             if not os.path.exists(output_dir):
