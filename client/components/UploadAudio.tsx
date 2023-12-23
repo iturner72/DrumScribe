@@ -19,6 +19,7 @@ const UploadAudio: React.FC = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [uploadedSongId, setUploadedSongId] = useState<number | null>(null);
   const [separatedTracks, setSeparatedTracks] = useState([]);
+  const [showTracksView, setShowTracksView] = useState(false);
 
   const getTrackTitlebyIndex = (index) => {
     switch(index) {
