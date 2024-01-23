@@ -103,12 +103,12 @@ const UploadAudio: React.FC = () => {
   useEffect(() => {
     console.log('processing status:', isProcessing);
     if (isProcessing) {
-      sleep(5000).then(() => setIsProcessing(false));
+      sleep(12000).then(() => setIsProcessing(false));
     }
   }, [isProcessing]);
 
   return (
-    <StyledView className="flex-1 justify-center items-center p-4">
+    <StyledView className="flex-1 justify-center items-center p-4 bg-slate-800 h-full w-full">
       {isProcessing && (
         <>
         {console.log('Rendering Lottie Animation')}
@@ -120,22 +120,22 @@ const UploadAudio: React.FC = () => {
         />
         </>
       )}
-      <StyledTouchableOpacity title="Upload Audio" onPress={handleSelectFile} tw="bg-4 bg-teal-700 py-2 px-4 rounded">
+      <StyledTouchableOpacity title="Upload Audio" onPress={handleSelectFile} tw="bg-4 bg-teal-700 py-2 px-4 rounded w-medium">
         <StyledText tw="text-white font-bold">Upload Audio 🔊</StyledText>
       </StyledTouchableOpacity>
       {uploadedSong && (
         <>
-          <StyledView className="mt-4 p-2 bg-slate-700 rounded-lg">
+          <StyledView className="mt-4 p-2 bg-slate-700 rounded-lg w-medium">
             <StyledText className="text-slate-300 font-semibold">
               {uploadedSong}
             </StyledText>
           </StyledView>
-          <StyledTouchableOpacity onPress={handleGenerateDrumChart} tw="mt-4 bg-rose-400 text-rose-100 font-bold py-2 px-4 rounded">
+          <StyledTouchableOpacity onPress={handleGenerateDrumChart} tw="mt-4 bg-rose-400 text-rose-100 font-bold py-2 px-4 rounded w-medium">
             <StyledText tw="text-rose-100 text-lg font-bold">Generate Drum Chart 🥁</StyledText>
           </StyledTouchableOpacity> 
         </>
       )}
-      <StyledView tw="flex-row flex-wrap justify-center">
+      <StyledView tw="p-4 flex-row flex-wrap justify-center">
         {separatedTracks.map((trackUrl, index) => (
           <TrackItem
             key={index}

@@ -40,7 +40,7 @@ const TrackItem = ({ url, title }) => {
   return (
     <StyledView tw="m-2">
       <StyledTouchableOpacity onPress={playSound} tw="items-center">
-        <StyledImage source={artwork} style={{ width: 100, height: 100 }} />
+        <StyledImage source={artwork} style={{ width: 60, height: 60 }} />
         <StyledText tw="text-white mt-2">{title}</StyledText>
       </StyledTouchableOpacity>
     </StyledView>

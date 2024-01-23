@@ -6,7 +6,6 @@ import Header from './components/Header';
 import UploadAudio from './components/UploadAudio';
 
 const StyledView = styled(View)
-const StyledText = styled(Text)
 
 const App: React.FC = () => {
   return (
